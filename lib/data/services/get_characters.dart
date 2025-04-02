@@ -4,7 +4,7 @@ import 'package:film_actors_app/presentation/resources/constants_manager.dart';
 
 class GetCharactersService {
   late Dio _dio;
-  GetCharactersService(dio) {
+  GetCharactersService() {
     BaseOptions options = BaseOptions(
       baseUrl: AppConstants.baseUrl, // Example API
       receiveDataWhenStatusError: true,
@@ -23,12 +23,8 @@ class GetCharactersService {
       Response response = await _dio.get('character');
 
       if (response.statusCode == 200) {
-        // List<dynamic> jsonData =
-        //     response.data['results']; // API returns a list of maps
-        // List<CharacterModel> charactersList =
-        //     jsonData.map((e) => CharacterModel.fromJson(e)).toList();
-
         return response.data['results']; // Successful response
+        /// let's return a list of characters in our repository  . go to it
       } else {
         throw Exception("Failed with status code: ${response.statusCode}");
       }

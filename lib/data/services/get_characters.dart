@@ -18,7 +18,7 @@ class GetCharactersService {
     _dio = Dio(options);
   }
 
-  Future<List<CharacterModel>> getCharactersData() async {
+  Future<dynamic> getCharactersData() async {
     try {
       Response response = await _dio.get('character');
 

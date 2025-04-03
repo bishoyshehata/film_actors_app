@@ -1,7 +1,10 @@
+import 'package:film_actors_app/data/models/character_model.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class CharacterDetailsScreen extends StatelessWidget {
-  const CharacterDetailsScreen({super.key});
+  final CharacterModel character;
+  const CharacterDetailsScreen({super.key, required this.character});
 
   @override
   Widget build(BuildContext context) {

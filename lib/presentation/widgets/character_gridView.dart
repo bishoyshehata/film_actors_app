@@ -1,3 +1,4 @@
+import 'package:film_actors_app/app_routes.dart';
 import 'package:film_actors_app/data/models/character_model.dart';
 import 'package:film_actors_app/presentation/resources/colors_manager.dart';
 import 'package:film_actors_app/presentation/resources/constants_manager.dart';
@@ -15,6 +16,7 @@ class CharacterGridview extends StatelessWidget {
   List<CharacterModel> characters;
   List<CharacterModel> searchedcharacters;
   TextEditingController searchController;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -27,10 +29,22 @@ class CharacterGridview extends StatelessWidget {
               ? searchedcharacters.length
               : characters.length,
           itemBuilder: (BuildContext context, int index) {
+            CharacterModel character = characters[index];
+            CharacterModel searchedCharacter;
+
+            if (searchController.text.isNotEmpty) {
+              searchedCharacter = searchedcharacters[index];
+            } else {
+              searchedCharacter = characters[index];
+            }
+
             return InkWell(
               splashColor: ColorManager.lightGrey,
               borderRadius: BorderRadius.circular(10),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.characterDetailsRoute,
+                    arguments: character);
+              },
               child: Card(
                   child: Stack(
                 fit: StackFit.expand,
@@ -44,12 +58,12 @@ class CharacterGridview extends StatelessWidget {
                       ),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: characters[index].image!.isNotEmpty
+                    child: character.image!.isNotEmpty
                         ? FadeInImage.assetNetwork(
                             placeholder: 'assets/images/loader.gif',
                             image: searchController.text.isNotEmpty
-                                ? searchedcharacters[index].image!
-                                : characters[index].image!,
+                                ? searchedCharacter.image!
+                                : character.image!,
                             fit: BoxFit.cover,
                           )
                         : Image.asset(AppConstants.testimage,
@@ -78,8 +92,8 @@ class CharacterGridview extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           searchController.text.isNotEmpty
-                              ? searchedcharacters[index].name!
-                              : characters[index].name!,
+                              ? searchedCharacter.name!
+                              : character.name!,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: FontSize.s17,

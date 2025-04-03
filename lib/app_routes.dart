@@ -1,4 +1,5 @@
 import 'package:film_actors_app/business_logic/cubit/characters_cubit.dart';
+import 'package:film_actors_app/data/models/character_model.dart';
 import 'package:film_actors_app/data/repository/characters_repository.dart';
 import 'package:film_actors_app/data/services/get_characters.dart';
 import 'package:film_actors_app/presentation/screens/character_details_screen.dart';
@@ -24,8 +25,12 @@ class AppRoutes {
                   child: HomeScreen(),
                 ));
       case characterDetailsRoute:
+        final character = settings.arguments;
+
         return MaterialPageRoute(
-            builder: (context) => CharacterDetailsScreen());
+            builder: (context) => CharacterDetailsScreen(
+                  character: character as CharacterModel,
+                ));
       default:
         return unDefinedRoute();
     }

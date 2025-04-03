@@ -7,8 +7,14 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class CharacterGridview extends StatelessWidget {
-  CharacterGridview({super.key, required this.characters});
+  CharacterGridview(
+      {super.key,
+      required this.characters,
+      required this.searchedcharacters,
+      required this.searchController});
   List<CharacterModel> characters;
+  List<CharacterModel> searchedcharacters;
+  TextEditingController searchController;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -17,7 +23,9 @@ class CharacterGridview extends StatelessWidget {
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisExtent: MediaQuery.of(context).size.height * 0.3),
-          itemCount: characters.length,
+          itemCount: searchController.text.isNotEmpty
+              ? searchedcharacters.length
+              : characters.length,
           itemBuilder: (BuildContext context, int index) {
             return InkWell(
               splashColor: ColorManager.lightGrey,
@@ -39,7 +47,9 @@ class CharacterGridview extends StatelessWidget {
                     child: characters[index].image!.isNotEmpty
                         ? FadeInImage.assetNetwork(
                             placeholder: 'assets/images/loader.gif',
-                            image: characters[index].image!,
+                            image: searchController.text.isNotEmpty
+                                ? searchedcharacters[index].image!
+                                : characters[index].image!,
                             fit: BoxFit.cover,
                           )
                         : Image.asset(AppConstants.testimage,
@@ -67,7 +77,9 @@ class CharacterGridview extends StatelessWidget {
                         child: Text(
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          characters[index].name!,
+                          searchController.text.isNotEmpty
+                              ? searchedcharacters[index].name!
+                              : characters[index].name!,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: FontSize.s17,

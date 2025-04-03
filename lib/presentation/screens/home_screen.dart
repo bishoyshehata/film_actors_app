@@ -13,11 +13,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool _isSearching = false;
+  final TextEditingController _searchController = TextEditingController();
+  List<CharacterModel> characters = [];
+  List<CharacterModel> searchedcharacters = [];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     BlocProvider.of<CharactersCubit>(context).getCharacters();
+  }
+
+  void addSearchedCharactersToList(String characterName) {
+    searchedcharacters = characters
+        .where((character) => character.name!
+            .toLowerCase()
+            .startsWith(characterName.toLowerCase()))
+        .toList();
+    setState(() {});
   }
 
   @override
@@ -27,18 +40,43 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: ColorManager.lightPrimary,
-          title: const Text(
-            'Characters',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
           leading: Icon(Icons.home_filled, color: Colors.white),
+          title: _isSearching
+              ? TextField(
+                  cursorColor: ColorManager.white,
+                  controller: _searchController,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    hintText: "Fintd a character...",
+                    hintStyle: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                    border: InputBorder.none,
+                  ),
+                  onChanged: (value) {
+                    addSearchedCharactersToList(value);
+                  },
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                )
+              : const Text(
+                  'Characters',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
           actions: [
             IconButton(
-              icon: const Icon(
-                Icons.search,
+              icon: Icon(
+                _isSearching ? Icons.close : Icons.search,
                 color: Colors.white,
               ),
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  _isSearching = !_isSearching;
+                  if (!_isSearching) {
+                    _searchController.clear();
+                    // Navigator.pop(context); // Clear search when closed
+                  }
+                });
+              },
             ),
           ],
         ),
@@ -51,21 +89,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: ColorManager.lightPrimary,
               ));
             case CharactersLoaded():
-              return CharacterGridview(characters: (state).charactersList);
+              characters = (state).charactersList;
+              return CharacterGridview(
+                characters: (state).charactersList,
+                searchController: _searchController,
+                searchedcharacters: searchedcharacters,
+              );
             case CharactersErrormessage():
               return Center(child: Text(state.errorMessage));
           }
-
-          // if (state is CharactersLoaded) {
-          //   return CharacterGridview(characters: state.charactersList);
-          // } else if (state is CharactersErrormessage) {
-          //   return Center(child: Text(state.errorMessage));
-          // } else {
-          //   return Center(
-          //       child: CircularProgressIndicator(
-          //     color: ColorManager.white,
-          //   ));
-          // }
         }));
   }
 }

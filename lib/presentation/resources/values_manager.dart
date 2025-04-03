@@ -167,6 +167,7 @@ class AppSizeHeight {
   static double s290 = 290.0.h;
   static double s300 = 300.0.h;
   static double s400 = 400.0.h;
+  static double s450 = 450.0.h;
   static double s500 = 500.0.h;
   static double s570 = 570.0.h;
   static double s600 = 600.0.h;

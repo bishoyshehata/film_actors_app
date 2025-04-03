@@ -46,61 +46,64 @@ class CharacterGridview extends StatelessWidget {
                     arguments: character);
               },
               child: Card(
-                  child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Container(
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: ColorManager.lightTextForm, // Border color
-                        width: 5, // Border thickness
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: character.image!.isNotEmpty
-                        ? FadeInImage.assetNetwork(
-                            placeholder: 'assets/images/loader.gif',
-                            image: searchController.text.isNotEmpty
-                                ? searchedCharacter.image!
-                                : character.image!,
-                            fit: BoxFit.cover,
-                          )
-                        : Image.asset(AppConstants.testimage,
-                            fit: BoxFit.cover),
-                  ),
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    height: double.infinity,
-                    width: double.infinity,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: ColorManager.lightTextForm, // Border color
-                        width: 5, // Border thickness
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Container(
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        height: AppSizeHeight.s30,
-                        decoration: BoxDecoration(
-                          color: ColorManager.black.withOpacity(0.3),
+                  child: Hero(
+                tag: character.id!,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Container(
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: ColorManager.lightTextForm, // Border color
+                          width: 5, // Border thickness
                         ),
-                        child: Text(
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          searchController.text.isNotEmpty
-                              ? searchedCharacter.name!
-                              : character.name!,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: FontSize.s17,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: character.image!.isNotEmpty
+                          ? FadeInImage.assetNetwork(
+                              placeholder: 'assets/images/loader.gif',
+                              image: searchController.text.isNotEmpty
+                                  ? searchedCharacter.image!
+                                  : character.image!,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(AppConstants.testimage,
+                              fit: BoxFit.cover),
+                    ),
+                    Container(
+                      alignment: Alignment.bottomCenter,
+                      height: double.infinity,
+                      width: double.infinity,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: ColorManager.lightTextForm, // Border color
+                          width: 5, // Border thickness
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Container(
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          height: AppSizeHeight.s30,
+                          decoration: BoxDecoration(
+                            color: ColorManager.black.withOpacity(0.3),
                           ),
-                        )),
-                  ),
-                ],
+                          child: Text(
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            searchController.text.isNotEmpty
+                                ? searchedCharacter.name!
+                                : character.name!,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: FontSize.s17,
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
               )),
             );
           },
